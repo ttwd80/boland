@@ -18,7 +18,7 @@ public class IntegrationTest1WebStaticTextIT extends AbstractWebIntegrationTest 
 		webDriver.get(baseUrl + "/test/1-test-static-text.html");
 		final String selector = "div div ol li span.africa";
 		final List<WebElement> items = webDriver.findElements(By.cssSelector(selector));
-		assertThat(items.size(), equalTo(2));
+		assertThat(items.size(), equalTo(1));
 	}
 
 	@Test
