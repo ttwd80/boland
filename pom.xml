@@ -18,6 +18,7 @@
 		<spring.version>4.3.0.RELEASE</spring.version>
 		<tomcat.version>8.5.3</tomcat.version>
 		<surefire.version>2.19.1</surefire.version>
+		<selenium.version>2.53.0</selenium.version>
 	</properties>
 	<dependencies>
 		<!-- Test -->
@@ -31,7 +32,7 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.53.0</version>
+			<version>${selenium.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -40,6 +41,21 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>${selenium.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-remote-driver</artifactId>
+			<version>${selenium.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>com.github.detro.ghostdriver</groupId>
 			<artifactId>phantomjsdriver</artifactId>
