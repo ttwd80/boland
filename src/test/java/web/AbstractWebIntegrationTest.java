@@ -12,7 +12,7 @@ public class AbstractWebIntegrationTest {
 
 	@Before
 	public void init() {
-		createFirefoxDriver();
+		createPhantomJSDriver();
 	}
 
 	protected void createPhantomJSDriver() {
