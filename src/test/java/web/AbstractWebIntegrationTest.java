@@ -48,10 +48,11 @@ public class AbstractWebIntegrationTest {
 
 	private String readKey() {
 		try {
-			final byte[] content = FileUtils.readFileToByteArray(new File("browser.txt"));
+			final File file = new File("browser.txt");
+			final byte[] content = FileUtils.readFileToByteArray(file);
 			return new String(content);
 		} catch (final IOException e) {
-			throw new RuntimeException(e);
+			return "phantomjs";
 		}
 	}
 
