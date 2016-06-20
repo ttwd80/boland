@@ -12,6 +12,10 @@
 
 	<mvc:view-controller path="/" view-name="index" />
 
+	<!-- Test section -->
+	<mvc:view-controller path="/test/*" />
+
+
 	<bean id="templateResolver"
 		class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
 		<property name="prefix" value="/WEB-INF/templates/" />
