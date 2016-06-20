@@ -16,16 +16,36 @@
 		<slf4j.version>1.7.21</slf4j.version>
 		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
 		<spring.version>4.3.0.RELEASE</spring.version>
-		<tomcat.version>8.5.2</tomcat.version>
+		<tomcat.version>8.5.3</tomcat.version>
 		<surefire.version>2.19.1</surefire.version>
 	</properties>
 	<dependencies>
+		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.53.0</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.detro.ghostdriver</groupId>
+			<artifactId>phantomjsdriver</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
 
 		<!-- Logging -->
 		<dependency>
@@ -85,6 +105,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+
 
 		<!-- Thymeleaf -->
 		<dependency>
