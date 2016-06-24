@@ -10,10 +10,10 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -90,9 +90,13 @@ public class AbstractWebIntegrationTest {
 		public WebDriver create() {
 
 			try {
+				final ChromeOptions options = new ChromeOptions();
+				options.addArguments("no-sandbox");
 				final URL remoteAddress = new URL("http://127.0.0.1:9515");
-				final Capabilities capabilities = DesiredCapabilities.chrome();
-				final WebDriver webDriver = new RemoteWebDriver(remoteAddress, capabilities);
+				final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+				final RemoteWebDriver webDriver = new RemoteWebDriver(remoteAddress, capabilities);
+
 				return webDriver;
 			} catch (final MalformedURLException e) {
 				throw new RuntimeException(e);
