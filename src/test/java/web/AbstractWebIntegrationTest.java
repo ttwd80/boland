@@ -2,19 +2,22 @@ package web;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AbstractWebIntegrationTest {
 	protected WebDriver webDriver;
@@ -75,7 +78,7 @@ public class AbstractWebIntegrationTest {
 		@Override
 		public WebDriver create() {
 			final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-			capabilities.setCapability("marionette", true);
+			capabilities.setCapability("marionette", "true");
 			final WebDriver webDriver = new FirefoxDriver(capabilities);
 			return webDriver;
 		}
@@ -85,8 +88,15 @@ public class AbstractWebIntegrationTest {
 
 		@Override
 		public WebDriver create() {
-			final WebDriver webDriver = new ChromeDriver();
-			return webDriver;
+
+			try {
+				final URL remoteAddress = new URL("http://127.0.0.1:9515");
+				final Capabilities capabilities = DesiredCapabilities.chrome();
+				final WebDriver webDriver = new RemoteWebDriver(remoteAddress, capabilities);
+				return webDriver;
+			} catch (final MalformedURLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }
