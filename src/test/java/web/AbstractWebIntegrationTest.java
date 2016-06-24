@@ -2,8 +2,6 @@ package web;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,11 +11,10 @@ import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AbstractWebIntegrationTest {
 	protected WebDriver webDriver;
@@ -88,19 +85,8 @@ public class AbstractWebIntegrationTest {
 
 		@Override
 		public WebDriver create() {
-
-			try {
-				final ChromeOptions options = new ChromeOptions();
-				options.addArguments("no-sandbox");
-				final URL remoteAddress = new URL("http://127.0.0.1:9515");
-				final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-				final RemoteWebDriver webDriver = new RemoteWebDriver(remoteAddress, capabilities);
-
-				return webDriver;
-			} catch (final MalformedURLException e) {
-				throw new RuntimeException(e);
-			}
+			final ChromeDriver webDriver = new ChromeDriver();
+			return webDriver;
 		}
 	}
 }
