@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +58,6 @@ public class AbstractWebIntegrationTest {
 		final String key = readKey();
 		final CreateWebDriverStrategy createWebDriverStrategy = map.get(key);
 		if (createWebDriverStrategy != null) {
-			createWebDriverStrategy.sleepIfNeeded();
 			return createWebDriverStrategy.create();
 		} else {
 			throw new RuntimeException("no browser setting detected in browser.txt");
@@ -78,8 +76,6 @@ public class AbstractWebIntegrationTest {
 
 	public static interface CreateWebDriverStrategy {
 		WebDriver create();
-
-		void sleepIfNeeded();
 	}
 
 	public static class CreatePhantomJSDriverStrategy implements CreateWebDriverStrategy {
@@ -88,10 +84,6 @@ public class AbstractWebIntegrationTest {
 		public WebDriver create() {
 			final WebDriver webDriver = new PhantomJSDriver();
 			return webDriver;
-		}
-
-		@Override
-		public void sleepIfNeeded() {
 		}
 	}
 
@@ -122,16 +114,6 @@ public class AbstractWebIntegrationTest {
 				throw new RuntimeException(e);
 			}
 		}
-
-		@Override
-		public void sleepIfNeeded() {
-			try {
-				TimeUnit.SECONDS.sleep(10);
-			} catch (final InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
 	}
 
 	public static class CreateChromeDriverStrategy implements CreateWebDriverStrategy {
@@ -142,8 +124,5 @@ public class AbstractWebIntegrationTest {
 			return webDriver;
 		}
 
-		@Override
-		public void sleepIfNeeded() {
-		}
 	}
 }
