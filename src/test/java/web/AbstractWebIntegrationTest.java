@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -31,7 +32,6 @@ public class AbstractWebIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		webDriver.quit();
 	}
 
 	private WebDriver createWebDriver() {
@@ -60,6 +60,8 @@ public class AbstractWebIntegrationTest {
 
 	public static interface CreateWebDriverStrategy {
 		WebDriver create();
+
+		void sleepIfNeeded();
 	}
 
 	public static class CreatePhantomJSDriverStrategy implements CreateWebDriverStrategy {
@@ -68,6 +70,10 @@ public class AbstractWebIntegrationTest {
 		public WebDriver create() {
 			final WebDriver webDriver = new PhantomJSDriver();
 			return webDriver;
+		}
+
+		@Override
+		public void sleepIfNeeded() {
 		}
 	}
 
@@ -81,7 +87,7 @@ public class AbstractWebIntegrationTest {
 		protected WebDriver createRemote() {
 			final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 			capabilities.setCapability("marionette", "true");
-			final WebDriver webDriver = new MarionetteDriver(4444);
+			final WebDriver webDriver = new MarionetteDriver();
 			return webDriver;
 
 		}
@@ -99,6 +105,15 @@ public class AbstractWebIntegrationTest {
 			}
 		}
 
+		@Override
+		public void sleepIfNeeded() {
+			try {
+				TimeUnit.SECONDS.sleep(5);
+			} catch (final InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 	}
 
 	public static class CreateChromeDriverStrategy implements CreateWebDriverStrategy {
@@ -107,6 +122,10 @@ public class AbstractWebIntegrationTest {
 		public WebDriver create() {
 			final ChromeDriver webDriver = new ChromeDriver();
 			return webDriver;
+		}
+
+		@Override
+		public void sleepIfNeeded() {
 		}
 	}
 }
