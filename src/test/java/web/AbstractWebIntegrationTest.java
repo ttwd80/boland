@@ -12,9 +12,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AbstractWebIntegrationTest {
 	protected WebDriver webDriver;
@@ -76,7 +76,7 @@ public class AbstractWebIntegrationTest {
 		public WebDriver create() {
 			final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 			capabilities.setCapability("marionette", "true");
-			final WebDriver webDriver = new FirefoxDriver(capabilities);
+			final WebDriver webDriver = new RemoteWebDriver(capabilities);
 			return webDriver;
 		}
 	}
