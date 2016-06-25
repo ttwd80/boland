@@ -32,6 +32,7 @@ public class AbstractWebIntegrationTest {
 
 	@After
 	public void cleanUp() {
+		webDriver.quit();
 	}
 
 	private WebDriver createWebDriver() {
