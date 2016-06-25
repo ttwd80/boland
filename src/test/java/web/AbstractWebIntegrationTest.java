@@ -43,6 +43,7 @@ public class AbstractWebIntegrationTest {
 		final String key = readKey();
 		final CreateWebDriverStrategy createWebDriverStrategy = map.get(key);
 		if (createWebDriverStrategy != null) {
+			createWebDriverStrategy.sleepIfNeeded();
 			return createWebDriverStrategy.create();
 		} else {
 			throw new RuntimeException("no browser setting detected in browser.txt");
@@ -109,7 +110,7 @@ public class AbstractWebIntegrationTest {
 		@Override
 		public void sleepIfNeeded() {
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				TimeUnit.SECONDS.sleep(10);
 			} catch (final InterruptedException e) {
 				throw new RuntimeException(e);
 			}
