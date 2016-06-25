@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
@@ -19,12 +22,14 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class AbstractWebIntegrationTest {
-	protected WebDriver webDriver;
-	protected String baseUrl = "http://localhost:58080";
+	static protected WebDriver webDriver = null;
+	static protected String firstHandle = null;
+	static protected String baseUrl = "http://localhost:58080";
 
-	@Before
-	public void init() {
+	@BeforeClass
+	public static void init() {
 		webDriver = createWebDriver();
+		firstHandle = webDriver.getWindowHandle();
 		final Options options = webDriver.manage();
 		final Window window = options.window();
 		window.maximize();
@@ -32,10 +37,21 @@ public class AbstractWebIntegrationTest {
 
 	@After
 	public void cleanUp() {
+		final Set<String> set = webDriver.getWindowHandles();
+		for (final String handle : set) {
+			if (!StringUtils.equals(handle, firstHandle)) {
+				webDriver.switchTo().window(handle);
+				webDriver.close();
+			}
+		}
+	}
+
+	@AfterClass
+	public static void quit() {
 		webDriver.quit();
 	}
 
-	private WebDriver createWebDriver() {
+	private static WebDriver createWebDriver() {
 		final Map<String, CreateWebDriverStrategy> map = new LinkedHashMap<>();
 		map.put("firefox", new CreateFirefoxDriverStrategy());
 		map.put("chrome", new CreateChromeDriverStrategy());
@@ -50,7 +66,7 @@ public class AbstractWebIntegrationTest {
 		}
 	}
 
-	private String readKey() {
+	private static String readKey() {
 		try {
 			final File file = new File("browser.txt");
 			final byte[] content = FileUtils.readFileToByteArray(file);
