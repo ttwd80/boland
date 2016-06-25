@@ -9,8 +9,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.WebDriver.Window;
@@ -25,8 +24,18 @@ public class AbstractWebIntegrationTest {
 	static protected String firstHandle = null;
 	static protected String baseUrl = "http://localhost:58080";
 
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
+		webDriver = createWebDriver();
+	}
+
+	@After
+	public void cleanUp() {
+		webDriver.quit();
+	}
+
+	// @BeforeClass
+	public static void initClass() {
 		webDriver = createWebDriver();
 		firstHandle = webDriver.getWindowHandle();
 		final Options options = webDriver.manage();
@@ -34,8 +43,8 @@ public class AbstractWebIntegrationTest {
 		window.maximize();
 	}
 
-	@After
-	public void cleanUp() {
+	// @After
+	public void messyCleanUp() {
 		final Set<String> set = webDriver.getWindowHandles();
 		for (final String handle : set) {
 			if (!StringUtils.equals(handle, firstHandle)) {
@@ -45,7 +54,7 @@ public class AbstractWebIntegrationTest {
 		}
 	}
 
-	@AfterClass
+	// @AfterClass
 	public static void quit() {
 		webDriver.quit();
 	}
