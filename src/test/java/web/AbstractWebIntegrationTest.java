@@ -100,7 +100,19 @@ public class AbstractWebIntegrationTest {
 
 		@Override
 		public WebDriver create() {
-			return createRemote();
+			return createMarionette();
+		}
+
+		protected WebDriver createMarionette() {
+			try {
+				Thread.sleep(5 * 60 * 1_000);
+				final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+				capabilities.setCapability("marionette", "true");
+				final WebDriver webDriver = new MarionetteDriver(capabilities);
+				return webDriver;
+			} catch (final InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		protected WebDriver createRemote() {
