@@ -4,25 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Options;
-import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class AbstractWebIntegrationTest {
-	static protected WebDriver webDriver = null;
-	static protected String firstHandle = null;
-	static protected String baseUrl = "http://localhost:58080";
+	protected WebDriver webDriver = null;
+	protected String firstHandle = null;
+	protected String baseUrl = "http://localhost:58080";
 
 	@Before
 	public void init() {
@@ -31,31 +26,6 @@ public class AbstractWebIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		webDriver.quit();
-	}
-
-	// @BeforeClass
-	public static void initClass() {
-		webDriver = createWebDriver();
-		firstHandle = webDriver.getWindowHandle();
-		final Options options = webDriver.manage();
-		final Window window = options.window();
-		window.maximize();
-	}
-
-	// @After
-	public void messyCleanUp() {
-		final Set<String> set = webDriver.getWindowHandles();
-		for (final String handle : set) {
-			if (!StringUtils.equals(handle, firstHandle)) {
-				webDriver.switchTo().window(handle);
-				webDriver.close();
-			}
-		}
-	}
-
-	// @AfterClass
-	public static void quit() {
 		webDriver.quit();
 	}
 
@@ -104,36 +74,10 @@ public class AbstractWebIntegrationTest {
 		}
 
 		protected WebDriver createMarionette() {
-			try {
-				Thread.sleep(5 * 60 * 1_000);
-				final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-				capabilities.setCapability("marionette", "true");
-				final WebDriver webDriver = new MarionetteDriver(capabilities);
-				return webDriver;
-			} catch (final InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-		protected WebDriver createRemote() {
 			final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 			capabilities.setCapability("marionette", "true");
-			final WebDriver webDriver = new MarionetteDriver();
+			final WebDriver webDriver = new MarionetteDriver(null, capabilities, 25_600);
 			return webDriver;
-
-		}
-
-		protected WebDriver createFirefox() {
-			try {
-				final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-				capabilities.setCapability("marionette", "true");
-				final WebDriver webDriver = new FirefoxDriver(capabilities);
-				return webDriver;
-			} catch (final RuntimeException e) {
-				throw e;
-			} catch (final Exception e) {
-				throw new RuntimeException(e);
-			}
 		}
 	}
 
