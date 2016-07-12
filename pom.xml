@@ -12,10 +12,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<jackson.version>2.7.5</jackson.version>
+		<jackson.version>2.8.0</jackson.version>
 		<slf4j.version>1.7.21</slf4j.version>
 		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
-		<spring.version>4.3.0.RELEASE</spring.version>
+		<spring.version>4.3.1.RELEASE</spring.version>
 		<tomcat.version>8.5.3</tomcat.version>
 		<surefire.version>2.19.1</surefire.version>
 		<selenium.version>2.53.1</selenium.version>

@@ -2,6 +2,8 @@ package web;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AbstractWebIntegrationTest {
 	protected WebDriver webDriver = null;
@@ -70,7 +73,7 @@ public class AbstractWebIntegrationTest {
 
 		@Override
 		public WebDriver create() {
-			return createMarionette();
+			return createRemote();
 		}
 
 		protected WebDriver createMarionette() {
@@ -78,6 +81,19 @@ public class AbstractWebIntegrationTest {
 			capabilities.setCapability("marionette", "true");
 			final WebDriver webDriver = new MarionetteDriver(null, capabilities, 25_600);
 			return webDriver;
+		}
+
+		protected WebDriver createRemote() {
+			URL url;
+			try {
+				url = new URL("http://localhost:25600");
+				DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+				capabilities.setCapability("marionette", true);
+				WebDriver webDriver = new RemoteWebDriver(url, capabilities);
+				return webDriver;
+			} catch (MalformedURLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
