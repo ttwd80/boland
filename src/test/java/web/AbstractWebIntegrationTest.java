@@ -84,14 +84,13 @@ public class AbstractWebIntegrationTest {
 		}
 
 		protected WebDriver createRemote() {
-			URL url;
 			try {
-				url = new URL("http://localhost:25600");
-				DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+				final URL url = new URL("http://localhost:25600");
+				final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 				capabilities.setCapability("marionette", true);
-				WebDriver webDriver = new RemoteWebDriver(url, capabilities);
+				final WebDriver webDriver = new RemoteWebDriver(url, capabilities);
 				return webDriver;
-			} catch (MalformedURLException e) {
+			} catch (final MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
 		}
