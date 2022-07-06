@@ -15,7 +15,7 @@
 		<jackson.version>2.11.1</jackson.version>
 		<slf4j.version>1.7.21</slf4j.version>
 		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
-		<spring.version>4.3.1.RELEASE</spring.version>
+		<spring.version>5.2.21.RELEASE</spring.version>
 		<tomcat.version>8.5.9</tomcat.version>
 		<surefire.version>2.19.1</surefire.version>
 		<selenium.version>2.53.1</selenium.version>
